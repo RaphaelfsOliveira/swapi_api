@@ -13,5 +13,4 @@ RUN pip install --upgrade pip
 COPY /flask/requirements.txt /flask/
 RUN pip install -r /flask/requirements.txt
 
-# app
-COPY . /flask/
+CMD ["flask", "run", "--host=0.0.0.0"]

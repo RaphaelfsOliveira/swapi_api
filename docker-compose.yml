@@ -4,9 +4,10 @@ services:
     flask:
         container_name: flask_swapi
         build: .
-        command: bash -c "export FLASK_APP=app.py &&
-                          flask run"
         volumes:
             - ./flask:/flask
-        # ports:
-        #     - "8000:8000"
+        ports:
+            - "5000:5000"
+        environment: 
+            FLASK_APP: app
+            FLASK_ENV: development 
