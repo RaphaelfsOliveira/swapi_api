@@ -4,19 +4,43 @@
 
 {% block content %}
 
-    <div class="container">
-        <div class="row">
-            <div class="col s12">
-            
-                <div class="collection z-depth-2">
-                    <a href="#!" class="collection-item"><span class="badge">1</span>Alan</a>
-                    <a href="#!" class="collection-item"><span class="new badge">4</span>Alan</a>
-                    <a href="#!" class="collection-item">Alan</a>
-                    <a href="#!" class="collection-item"><span class="badge">14</span>Alan</a>
-                </div>
-                <b>Nome: {{ name }}</b>
-    
-            </div>
+<div class="container">
+    <div class="row">
+        <div class="col s12">
+            <br><br>
+            <table id="myTable" style="width:100%"></table>
+
+            <script>
+                data = [{{ data| safe }}];
+                data = data[0]['results'];
+
+                var my_columns = [];
+
+                $.each(data[0], function (key, value) {
+                    var my_item = {};
+                    my_item.data = key;
+                    my_item.title = `<b>${key}</b>`;
+                    my_columns.push(my_item);
+                });
+
+                $(document).ready(function () {
+
+                    $('#myTable').DataTable({
+                        autoWidth: false,
+                        data: data,
+                        columns: my_columns,
+                        columnDefs: [
+                            {
+                                targets: ['_all'],
+                                className: 'mdc-data-table__cell'
+                            }
+                        ]
+                    });
+
+                });
+            </script>
+
         </div>
     </div>
+</div>
 {% endblock %}
