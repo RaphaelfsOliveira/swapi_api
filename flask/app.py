@@ -5,8 +5,8 @@ from flask import render_template
 app = Flask(__name__)
 
 @app.route('/')
-def index():
+def IndexView():
     context = {
-        'name': 'Raphael',
+        'name': 'Test Nome',
     }
-    return render_template('base.html', **context)
+    return render_template('index.html', **context)
