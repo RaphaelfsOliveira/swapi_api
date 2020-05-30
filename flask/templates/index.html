@@ -1,13 +1,22 @@
 {% extends 'base.html' %}
 
-{% block title%}
-Index
-{% endblock %}
+{% block title %} Index {% endblock %}
 
 {% block content %}
-    body da pagina:
-    <br><br>
 
-    <b>Nome: {{ name }}</b>
-
+    <div class="container">
+        <div class="row">
+            <div class="col s12">
+            
+                <div class="collection z-depth-2">
+                    <a href="#!" class="collection-item"><span class="badge">1</span>Alan</a>
+                    <a href="#!" class="collection-item"><span class="new badge">4</span>Alan</a>
+                    <a href="#!" class="collection-item">Alan</a>
+                    <a href="#!" class="collection-item"><span class="badge">14</span>Alan</a>
+                </div>
+                <b>Nome: {{ name }}</b>
+    
+            </div>
+        </div>
+    </div>
 {% endblock %}
