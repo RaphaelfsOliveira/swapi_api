@@ -12,8 +12,8 @@ def IndexView():
         url = '{}{}'.format(endpoint, 'people/')
 
         context = {
-            'error_title': 'Limite excedido',
-            'error_msg': 'Numero máximo de conexões a api excedido'
+            'error_title': 'Erro',
+            'error_msg': 'Numero máximo de conexões a api excedido' if root_api.status_code != 200 else 'Erro interno'
         }
 
         if request.method == 'POST':
@@ -43,7 +43,7 @@ def IndexView():
                 'current': int(response.json()['next'][-1]) - 1 if response.json()['next'] else '',
             },
         }
-    except Exception as error:
+    except Exception:
         pass
 
     return render_template('index.html', **context)
