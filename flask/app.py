@@ -77,7 +77,8 @@ def StarshipsView():
     context = error_log(response)
     
     response = response.json()
-    
+
+    new_starships = []
     starships = response['results']
     for ship in starships:
         
@@ -91,13 +92,32 @@ def StarshipsView():
             cost_in_credits = float(cost_in_credits) if is_valid(cost_in_credits) else None
 
             if hyperdrive_rating and cost_in_credits:
-                result = hyperdrive_rating / cost_in_credits
-                return '{:.3E}'.format(result)
+                result = (hyperdrive_rating / cost_in_credits) * 1000000
+                return '{:.5f}'.format(result)
 
             return 'unknown'
         
         ship['score'] = calc_score(ship['hyperdrive_rating'], ship['cost_in_credits'])
 
+        new_ship = {
+            'name': ship['name'],
+            'model': ship['model'],
+            'score': ship['score'],
+            'manufacturer': ship['manufacturer'],
+            'cost_in_credits': ship['cost_in_credits'],
+            'length': ship['length'],
+            'max_atmosphering_speed': ship['max_atmosphering_speed'],
+            'crew': ship['crew'],
+            'passengers': ship['passengers'],
+            'cargo_capacity': ship['cargo_capacity'],
+            'consumables': ship['consumables'],
+            'hyperdrive_rating': ship['hyperdrive_rating'],
+            'MGLT': ship['MGLT'],
+            'starship_class': ship['starship_class'],
+        }
+        new_starships.append(new_ship)
+    
+    response['results'] = new_starships
     data = json.dumps(response)
 
     context = {
