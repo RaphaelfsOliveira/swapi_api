@@ -13,7 +13,7 @@
                     <select name="select_category">
                         <option value="" disabled selected>Escolha uma categoria</option>
                         <ul>
-                            {% for key, value  in root.items() %}
+                            {% for key, value  in root_api.items() %}
                                 <option value="{{ value }}">{{ key }}</option>
                             {% endfor %}
                         </ul>

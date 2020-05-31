@@ -7,8 +7,7 @@ app = Flask(__name__)
 
 @app.route('/', methods=['GET', 'POST'])
 def IndexView():
-    url = '{}{}'.format(endpoint, '')
-    root = requests.get(url)
+    root_api = requests.get(endpoint)
 
     if request.method == 'POST':
         if request.form:
@@ -20,6 +19,6 @@ def IndexView():
 
     context = {
         'data': response.text,
-        'root': root.json()
+        'root_api': root_api.json()
     }
     return render_template('index.html', **context)
