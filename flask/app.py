@@ -26,13 +26,15 @@ def IndexView():
 
                 if 'search_input' in request.form:
                     search_input = request.form['search_input']
-
                     response = requests.get(url_category + search.format(search_input))
+
                 else:
                     response = requests.get(url_category)
+
             elif 'pagination' in request.form:
                 page = request.form['pagination']
                 response = requests.get(page)
+                
             else:
                 response = requests.get(url)
         else:    
