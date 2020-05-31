@@ -7,27 +7,43 @@ app = Flask(__name__)
 
 @app.route('/', methods=['GET', 'POST'])
 def IndexView():
-    root_api = requests.get(endpoint)
-    url = '{}{}'.format(endpoint, 'people/')
+    try:
+        root_api = requests.get(endpoint)
+        url = '{}{}'.format(endpoint, 'people/')
 
-    if request.method == 'POST':
-        print(
-            request.form
-        )
-        if 'select_category' in request.form:
-            url_category = request.form['select_category']
-            response = requests.get(url_category)
-        elif 'pagination' in request.form:
-            page = request.form['pagination']
-            response = requests.get(page)
-        else:
+        context = {
+            'error_title': 'Limite excedido',
+            'error_msg': 'Numero máximo de conexões a api excedido'
+        }
+
+        if request.method == 'POST':
+            if 'select_category' in request.form:
+                url_category = request.form['select_category']
+                response = requests.get(url_category)
+            elif 'pagination' in request.form:
+                page = request.form['pagination']
+                response = requests.get(page)
+            else:
+                response = requests.get(url)
+        else:    
             response = requests.get(url)
-    else:    
-        response = requests.get(url)
+        
+        context = {
+            'data': response.text,
+            'root_api': root_api.json(),
+            'pages': {
+                'previous': {
+                    'url': response.json()['previous'],
+                    'page': response.json()['previous'][-1] if response.json()['previous'] else '',
+                },
+                'next': {
+                    'url': response.json()['next'],
+                    'page': response.json()['next'][-1] if response.json()['next'] else '',
+                },
+                'current': int(response.json()['next'][-1]) - 1 if response.json()['next'] else '',
+            },
+        }
+    except Exception as error:
+        pass
 
-    context = {
-        'data': response.text,
-        'root_api': root_api.json(),
-        'pages': response.json(),
-    }
     return render_template('index.html', **context)
