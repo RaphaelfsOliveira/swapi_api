@@ -77,10 +77,10 @@ def StarshipsView():
     context = error_log(response)
     
     response = response.json()
-
+    
     starships = response['results']
     for ship in starships:
-
+        
         def is_valid(value):
             if value and value != 'unknown':
                 return value
@@ -95,8 +95,7 @@ def StarshipsView():
                 return '{:.3E}'.format(result)
 
             return 'unknown'
-            
-
+        
         ship['score'] = calc_score(ship['hyperdrive_rating'], ship['cost_in_credits'])
 
     data = json.dumps(response)
