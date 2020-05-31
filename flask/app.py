@@ -29,7 +29,6 @@ def IndexView():
                 if 'search_input' in request.form:
                     search_input = request.form['search_input']
                     response = requests.get(url_category + search.format(search_input))
-
                 else:
                     response = requests.get(url_category)
 
@@ -93,9 +92,9 @@ def StarshipsView():
 
             if hyperdrive_rating and cost_in_credits:
                 result = (hyperdrive_rating / cost_in_credits) * 1000000
-                return '{:.5f}'.format(result)
+                return '{:.10f}'.format(result)
 
-            return 'unknown'
+            return ''
         
         ship['score'] = calc_score(ship['hyperdrive_rating'], ship['cost_in_credits'])
 
@@ -115,6 +114,7 @@ def StarshipsView():
             'MGLT': ship['MGLT'],
             'starship_class': ship['starship_class'],
         }
+        {k: v for k, v in sorted(new_ship.items(), key=lambda item: item[1])}
         new_starships.append(new_ship)
     
     response['results'] = new_starships
