@@ -4,10 +4,33 @@
 
 {% block content %}
 
-<div class="container">
+<div class="container-flex">
+    <br><br>
+    <div class="row">
+        <form class="col s12" action="" method="POST">
+            <div class="col s10">
+                <div class="input-field col s10">
+                    <select name="select_category">
+                        <option value="" disabled selected>Escolha uma categoria</option>
+                        <ul>
+                            {% for key, value  in root.items() %}
+                                <option value="{{ value }}">{{ key }}</option>
+                            {% endfor %}
+                        </ul>
+                    </select>
+                    <label>Filtro por Categoria</label>
+                </div>
+                <br>
+            </div>
+            <div class="col s2">
+                <button class="btn waves-effect waves-light btn-small" type="submit" name="search_category">Pesquisar
+                    <i class="material-icons right">send</i>
+                </button>
+            </div>
+        </form>
+    </div>
     <div class="row">
         <div class="col s12">
-            <br><br>
             <table id="myTable" style="width:100%"></table>
 
             <script>
@@ -24,6 +47,7 @@
                 });
 
                 $(document).ready(function () {
+                    $('select').formSelect();
 
                     $('#myTable').DataTable({
                         autoWidth: false,

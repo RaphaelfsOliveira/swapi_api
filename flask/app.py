@@ -1,17 +1,25 @@
-from flask import Flask
-from flask import render_template
+from flask import Flask, request, render_template
 from settings import endpoint
 import requests
 
+
 app = Flask(__name__)
 
-@app.route('/', methods=['GET'])
+@app.route('/', methods=['GET', 'POST'])
 def IndexView():
-    url = '{}{}'.format(endpoint, 'people/')
-    response = requests.get(url)
-    
+    url = '{}{}'.format(endpoint, '')
+    root = requests.get(url)
+
+    if request.method == 'POST':
+        if request.form:
+            url_category = request.form['select_category']
+            response = requests.get(url_category)
+    else:    
+        url = '{}{}'.format(endpoint, 'people/')
+        response = requests.get(url)
+
     context = {
-        'name': 'Test Nome',
-        'data': response.text
+        'data': response.text,
+        'root': root.json()
     }
     return render_template('index.html', **context)
