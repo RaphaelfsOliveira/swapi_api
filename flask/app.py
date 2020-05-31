@@ -21,11 +21,6 @@ def IndexView():
         context = error_log(root_api)
 
         if request.method == 'POST':
-
-            print(
-                request.form
-            )
-
             if 'select_category' in request.form:
                 url_category = request.form['select_category']
 
@@ -76,7 +71,6 @@ def StarshipsView():
         response = requests.get(url)
     
     context = error_log(response)
-
 
     context = {
         'data': response.text,
