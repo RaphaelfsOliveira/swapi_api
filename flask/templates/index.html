@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="../static/style_index.css">
 
 <div class="container-flex">
-    <br><br>
+    <br>
     <div class="row">
         <form class="col s12" action="" method="POST">
             <div class="col s10">
@@ -71,7 +71,8 @@
                     $('select').formSelect();
 
                     $('#myTable').DataTable({
-                        autoWidth: false,
+                        lengthChange: false,
+                        paging: false,
                         data: data,
                         columns: my_columns,
                         columnDefs: [
@@ -85,6 +86,33 @@
                 });
             </script>
 
+        </div>
+    </div>
+    <div class="row">
+        <div class="col s12">
+            <form class="col s12" action="" method="POST">
+                <ul class="pagination">
+                    {% if pages.previous %}
+                        <button class="waves-effect waves-light btn-small" value="{{ pages.previous }}" type="submit" name="pagination">
+                            <i class="material-icons">chevron_left</i>
+                        </button>
+                    {% else %}
+                        <button class="btn-flat disabled" value="#">
+                            <i class="material-icons">chevron_left</i>
+                        </button>
+                    {% endif %}
+    
+                    {% if pages.next %}
+                        <button class="waves-effect waves-light btn-small" value="{{ pages.next }}" type="submit" name="pagination">
+                            <i class="material-icons">chevron_right</i>
+                        </button>
+                    {% else %}
+                        <button class="btn-flat disabled" value="#">
+                            <i class="material-icons">chevron_right</i>
+                        </button>
+                    {% endif %}
+                </ul>
+            </form>
         </div>
     </div>
 </div>
