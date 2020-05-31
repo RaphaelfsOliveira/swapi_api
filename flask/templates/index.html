@@ -14,7 +14,7 @@
                         <option value="" disabled selected>Escolha uma categoria</option>
                         <ul>
                             {% for key, value  in root_api.items() %}
-                                <option value="{{ value }}">{{ key }}</option>
+                                <option value="{{ value }}">{{ key|capitalize }}</option>
                             {% endfor %}
                         </ul>
                     </select>
@@ -37,13 +37,33 @@
                 data = [{{ data| safe }}];
                 data = data[0]['results'];
 
+                remove_columns = [
+                    'films',
+                    'homeworld',
+                    'species',
+                    'url',
+                    'vehicles',
+                    'starships',
+                    'opening_crawl',
+                    'characters',
+                    'created',
+                    'edited',
+                    'planets',
+                    'people',
+                    'residents',
+                    'pilots',
+                ]
+
                 var my_columns = [];
 
                 $.each(data[0], function (key, value) {
                     var my_item = {};
-                    my_item.data = key;
-                    my_item.title = `<b>${key}</b>`;
-                    my_columns.push(my_item);
+                    if (remove_columns.includes(key)) {
+                    } else {
+                        my_item.data = key;
+                        my_item.title = `<b>${key.toUpperCase()}</b>`;
+                        my_columns.push(my_item);
+                    }
                 });
 
                 $(document).ready(function () {
