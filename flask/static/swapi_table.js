@@ -24,7 +24,7 @@ $.each(data[0], function (key, value) {
     if (remove_columns.includes(key)) {
     } else {
         my_item.data = key;
-        my_item.title = `<b>${key.toUpperCase()}</b>`;
+        my_item.title = `<b>${key.toUpperCase().replace(/_/g, ' ')}</b>`;
         my_columns.push(my_item);
     }
 });
