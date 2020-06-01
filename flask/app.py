@@ -114,7 +114,6 @@ def StarshipsView():
             'MGLT': ship['MGLT'],
             'starship_class': ship['starship_class'],
         }
-        {k: v for k, v in sorted(new_ship.items(), key=lambda item: item[1])}
         new_starships.append(new_ship)
     
     response['results'] = new_starships
