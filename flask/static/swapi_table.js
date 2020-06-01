@@ -33,7 +33,7 @@ $(document).ready(function () {
     $('select').formSelect();
 
     $('#myTable').DataTable({
-        order: [[ 2, 'desc' ]],
+        order: order,
         lengthChange: false,
         paging: false,
         data: data,

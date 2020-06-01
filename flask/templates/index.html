@@ -34,7 +34,10 @@
     <div class="row">
         <div class="col s12">
             <table id="myTable"></table>
-            <script>data = [{{ data| safe }}];</script>
+            <script>
+                data = [{{ data| safe }}];
+                order = [[0, 'asc']];
+            </script>
         </div>
     </div>
     <div class="row">
