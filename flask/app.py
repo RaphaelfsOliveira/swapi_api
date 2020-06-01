@@ -64,73 +64,77 @@ def IndexView():
 
 @app.route('/starships', methods=['GET', 'POST'])
 def StarshipsView():
-    url = '{}{}'.format(endpoint, 'starships/')
+    try:
+        url = '{}{}'.format(endpoint, 'starships/')
 
-    if request.method == 'POST':
-        if 'pagination' in request.form:
-            page = request.form['pagination']
-            response = requests.get(page)
-    else:
-        response = requests.get(url)
-    
-    context = error_log(response)
-    
-    response = response.json()
-
-    new_starships = []
-    starships = response['results']
-    for ship in starships:
+        if request.method == 'POST':
+            if 'pagination' in request.form:
+                page = request.form['pagination']
+                response = requests.get(page)
+        else:
+            response = requests.get(url)
         
-        def is_valid(value):
-            if value and value != 'unknown':
-                return value
-            return None
+        context = error_log(response)
         
-        def calc_score(hyperdrive_rating, cost_in_credits):
-            hyperdrive_rating = float(hyperdrive_rating) if is_valid(hyperdrive_rating) else None
-            cost_in_credits = float(cost_in_credits) if is_valid(cost_in_credits) else None
+        response = response.json()
 
-            if hyperdrive_rating and cost_in_credits:
-                result = (hyperdrive_rating / cost_in_credits) * 1000000
-                return '{:.10f}'.format(result)
+        new_starships = []
+        starships = response['results']
+        for ship in starships:
+            
+            def is_valid(value):
+                if value and value != 'unknown':
+                    return value
+                return None
+            
+            def calc_score(hyperdrive_rating, cost_in_credits):
+                hyperdrive_rating = float(hyperdrive_rating) if is_valid(hyperdrive_rating) else None
+                cost_in_credits = float(cost_in_credits) if is_valid(cost_in_credits) else None
 
-            return ''
+                if hyperdrive_rating and cost_in_credits:
+                    result = (hyperdrive_rating / cost_in_credits) * 1000000
+                    return '{:.10f}'.format(result)
+
+                return ''
+            
+            ship['score'] = calc_score(ship['hyperdrive_rating'], ship['cost_in_credits'])
+
+            new_ship = {
+                'name': ship['name'],
+                'model': ship['model'],
+                'score': ship['score'],
+                'manufacturer': ship['manufacturer'],
+                'cost_in_credits': ship['cost_in_credits'],
+                'length': ship['length'],
+                'max_atmosphering_speed': ship['max_atmosphering_speed'],
+                'crew': ship['crew'],
+                'passengers': ship['passengers'],
+                'cargo_capacity': ship['cargo_capacity'],
+                'consumables': ship['consumables'],
+                'hyperdrive_rating': ship['hyperdrive_rating'],
+                'MGLT': ship['MGLT'],
+                'starship_class': ship['starship_class'],
+            }
+            new_starships.append(new_ship)
         
-        ship['score'] = calc_score(ship['hyperdrive_rating'], ship['cost_in_credits'])
+        response['results'] = new_starships
+        data = json.dumps(response)
 
-        new_ship = {
-            'name': ship['name'],
-            'model': ship['model'],
-            'score': ship['score'],
-            'manufacturer': ship['manufacturer'],
-            'cost_in_credits': ship['cost_in_credits'],
-            'length': ship['length'],
-            'max_atmosphering_speed': ship['max_atmosphering_speed'],
-            'crew': ship['crew'],
-            'passengers': ship['passengers'],
-            'cargo_capacity': ship['cargo_capacity'],
-            'consumables': ship['consumables'],
-            'hyperdrive_rating': ship['hyperdrive_rating'],
-            'MGLT': ship['MGLT'],
-            'starship_class': ship['starship_class'],
-        }
-        new_starships.append(new_ship)
-    
-    response['results'] = new_starships
-    data = json.dumps(response)
-
-    context = {
-        'data': data,
-        'pages': {
-            'previous': {
-                'url': response['previous'],
-                'page': response['previous'][-1] if response['previous'] else '',
+        context = {
+            'data': data,
+            'pages': {
+                'previous': {
+                    'url': response['previous'],
+                    'page': response['previous'][-1] if response['previous'] else '',
+                },
+                'next': {
+                    'url': response['next'],
+                    'page': response['next'][-1] if response['next'] else '',
+                },
+                'current': int(response['next'][-1]) - 1 if response['next'] else '',
             },
-            'next': {
-                'url': response['next'],
-                'page': response['next'][-1] if response['next'] else '',
-            },
-            'current': int(response['next'][-1]) - 1 if response['next'] else '',
-        },
-    }
+        }    
+    except Exception:
+        pass
+
     return render_template('starships_page.html', **context)
