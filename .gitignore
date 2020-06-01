@@ -24,7 +24,7 @@ var/
 *.egg
 instance/
 .pytest_cache/
-
+.config
 
 
 # PyInstaller
